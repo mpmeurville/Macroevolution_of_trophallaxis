@@ -1,0 +1,16 @@
+Aneuretus.simoni	0.04	0.96
+Wasmannia.auropunctata	0.0	1.0
+Temnothorax.nylanderi	0.0	1.0
+Myrmoteras.iriodum	0.13	0.87
+Ectatomma.ruidum	1.0	0.0
+Messor.capitatus	1.0	0.0
+Brachyponera.chinensis	0.8	0.2
+Forelius.damiani	0.07	0.93
+Xenomyrmex.floridanus	0.0	1.0
+Mesoponera.caffraria	0.07	0.93
+Myrmecocystus.mexicanus	0.0	1.0
+Dolichoderus.thoracicus	0.1	0.9
+Messor.structor	0.96	0.04
+Strumigenys.membranifera	0.0	1.0
+Lasius.neglectus	0.0	1.0
+Oecophylla.smaragdina	0.0	1.0

@@ -1,0 +1,16 @@
+Leptothorax.muscorum	0.0	1.0
+Camponotus.yamaokai	0.11	0.89
+Carebara.overbecki	0.0	1.0
+Myrmoteras.barbouri	0.0	1.0
+Strumigenys.solifontis	0.0	1.0
+Formica.pratensis	0.0	1.0
+Myrmoteras.toro	0.0	1.0
+Orectognathus.versicolor	0.89	0.11
+Polyrhachis.loweryi	0.13	0.87
+Cataglyphis.nigra	0.0	1.0
+Monomorium.rothsteini	0.0	1.0
+Pseudomyrmex.penetrator	0.0	1.0
+Amblyopone.australis	1.0	0.0
+Formica.truncorum	0.0	1.0
+Platythyrea.punctata	1.0	0.0
+Ophthalmopone.berthoudi	0.86	0.14

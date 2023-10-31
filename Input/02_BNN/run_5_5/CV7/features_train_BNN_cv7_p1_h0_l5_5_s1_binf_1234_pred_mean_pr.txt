@@ -1,0 +1,16 @@
+Formica.obscuripes	0.0	1.0
+Lasius.platythorax	0.0	1.0
+Daceton.armigerum	0.3	0.7
+Basiceros.manni	0.81	0.19
+Dorylus.laevigatus	0.96	0.04
+Messor.barbarus	1.0	0.0
+Myrmecia.pyriformis	0.13	0.87
+Cataglyphis.iberica	0.0	1.0
+Nesomyrmex.echinatinodis	0.0	1.0
+Myrmica.sabuleti	0.0	1.0
+Pheidole.bicornis	1.0	0.0
+Strumigenys.louisianae	0.51	0.49
+Atopomyrmex.mocquerysi	0.0	1.0
+Myrmica.schencki	0.0	1.0
+Tetramorium.bicarinatum	0.0	1.0
+Atta.laevigata	0.39	0.61

@@ -1,0 +1,16 @@
+Prionopelta.amabilis	1.0	0.0
+Solenopsis.geminata	0.0	1.0
+Pseudomyrmex.satanicus	0.0	1.0
+Myrmica.incompleta	0.24	0.76
+Anoplolepis.gracilipes	0.0	1.0
+Cyphomyrmex.rimosus	0.03	0.97
+Camponotus.sanctus	0.0	1.0
+Hypoponera.eduardi	0.92	0.08
+Gnamptogenys.striatula	1.0	0.0
+Ponera.coarctata	0.85	0.15
+Liometopum.occidentale	0.0	1.0
+Dinoponera.quadriceps	0.85	0.15
+Cryptopone.sauteri	0.85	0.15
+Eurhopalothrix.heliscata	0.16	0.84
+Aphaenogaster.subterranea	0.56	0.44
+Streblognathus.aethiopicus	0.9	0.1

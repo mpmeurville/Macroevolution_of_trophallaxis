@@ -1,0 +1,16 @@
+Tetramorium.tsushimae	0.0	1.0
+Formica.exsecta	0.0	1.0
+Brachymyrmex.patagonicus	0.06	0.94
+Myrmica.ruginodis	0.62	0.38
+Pogonomyrmex.badius	0.99	0.01
+Nesomyrmex.spininodis	0.0	1.0
+Cephalotes.goniodontus	0.0	1.0
+Formica.sanguinea	0.0	1.0
+Ocymyrmex.foreli	0.0	1.0
+Formica.polyctena	0.0	1.0
+Pheidole.spadonia	0.0	1.0
+Formica.paralugubris	0.0	1.0
+Cephalotes.pusillus	0.0	1.0
+Odontomachus.affinis	0.64	0.36
+Neoponera.apicalis	0.81	0.19
+Polyrhachis.dives	0.0	1.0

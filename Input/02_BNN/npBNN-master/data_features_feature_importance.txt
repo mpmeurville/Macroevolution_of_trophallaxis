@@ -1,0 +1,4 @@
+feature_block_index	feature_name	delta_acc_mean	delta_acc_std	acc_with_feature_randomized_mean	acc_with_feature_randomized_std
+2	block_2	0.000240	0.0009499473669630345	0.999760	0.0009499473669630342
+0	block_0	0.000000	0.0	1.000000	0.0
+1	block_1	0.000000	0.0	1.000000	0.0

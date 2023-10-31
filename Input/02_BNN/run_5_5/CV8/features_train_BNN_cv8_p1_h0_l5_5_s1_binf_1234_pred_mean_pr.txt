@@ -1,0 +1,16 @@
+Monomorium.pharaonis	0.0	1.0
+Megaponera.analis	0.22	0.78
+Proformica.epinotalis	0.0	1.0
+Formica.rufa	0.0	1.0
+Atta.sexdens	0.01	0.99
+Oecophylla.longinoda	0.0	1.0
+Pheidole.megacephala	0.0	1.0
+Camponotus.cruentatus	0.0	1.0
+Acromyrmex.balzani	0.01	0.99
+Acromyrmex.crassispinus	0.01	0.99
+Strumigenys.lewisi	0.0	1.0
+Leptomyrmex.erythrocephalus	0.0	1.0
+Prenolepis.nitens	0.0	1.0
+Pseudomyrmex.peperi	0.0	1.0
+Cephalotes.atratus	0.0	1.0
+Crematogaster.ashmeadi	0.0	1.0

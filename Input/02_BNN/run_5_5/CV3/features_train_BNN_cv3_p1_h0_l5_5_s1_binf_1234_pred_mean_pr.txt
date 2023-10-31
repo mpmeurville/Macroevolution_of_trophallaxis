@@ -1,0 +1,16 @@
+Formica.japonica	0.0	1.0
+Leptogenys.schwabi	0.31	0.69
+Discothyrea.sauteri	1.0	0.0
+Pseudomyrmex.elongatus	0.0	1.0
+Pseudomyrmex.gracilis	0.0	1.0
+Proatta.butteli	0.0	1.0
+Myrmecocystus.mimicus	0.0	1.0
+Pogonomyrmex.barbatus	0.56	0.44
+Pseudomyrmex.tenuis	0.0	1.0
+Camponotus.pennsylvanicus	0.0	1.0
+Nothomyrmecia.macrops	0.03	0.97
+Pristomyrmex.punctatus	0.0	1.0
+Anochetus.kempfi	0.25	0.75
+Camponotus.fellah	0.0	1.0
+Ooceraea.biroi	0.99	0.01
+Camponotus.herculeanus	0.0	1.0

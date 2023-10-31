@@ -1,0 +1,16 @@
+Leptothorax.acervorum	0.0	1.0
+Formica.cinerea	0.0	1.0
+Prenolepis.imparis	0.0	1.0
+Manica.rubida	0.26	0.74
+Lasius.fuliginosus	0.0	1.0
+Paratrechina.longicornis	0.0	1.0
+Platythyrea.schultzei	1.0	0.0
+Plagiolepis.pygmaea	0.0	1.0
+Camponotus.vagus	0.0	1.0
+Polyrhachis.laboriosa	0.0	1.0
+Carebara.perpusilla	0.0	1.0
+Tapinoma.sessile	0.01	0.99
+Camponotus.mus	0.0	1.0
+Rhytidoponera.mayri	1.0	0.0
+Tapinoma.erraticum	0.0	1.0
+Pheidole.morrisii	0.0	1.0

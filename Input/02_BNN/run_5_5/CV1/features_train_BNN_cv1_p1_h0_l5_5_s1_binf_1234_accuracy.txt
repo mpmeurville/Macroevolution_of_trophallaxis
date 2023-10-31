@@ -1,0 +1,1 @@
+Mean accuracy: 0.8125 (TP: 0.5; FP: 0.0)

@@ -1,0 +1,16 @@
+Leptanilla.japonica	1.0	0.0
+Temnothorax.rugatulus	0.0	1.0
+Pseudomyrmex.ferrugineus	0.02	0.98
+Tapinoma.melanocephalum	0.0	1.0
+Temnothorax.albipennis	0.02	0.98
+Pseudomyrmex.oculatus	0.01	0.99
+Proceratium.croceum	1.0	0.0
+Acanthomyrmex.notabilis	0.0	1.0
+Pheidole.dentata	0.0	1.0
+Formicoxenus.provancheri	0.02	0.98
+Formica.fusca	0.0	1.0
+Lasius.flavus	0.0	1.0
+Lasius.niger	0.0	1.0
+Camponotus.floridanus	0.0	1.0
+Cataulacus.muticus	0.0	1.0
+Acanthomyrmex.ferox	0.0	1.0

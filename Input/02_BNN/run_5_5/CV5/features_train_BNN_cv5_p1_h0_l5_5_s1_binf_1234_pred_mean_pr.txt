@@ -1,0 +1,16 @@
+Strumigenys.rostrata	0.6	0.4
+Formica.subintegra	0.0	1.0
+Solenopsis.invicta	0.0	1.0
+Temnothorax.ambiguus	0.0	1.0
+Linepithema.humile	0.0	1.0
+Formica.lugubris	0.0	1.0
+Melophorus.bagoti	0.0	1.0
+Acromyrmex.octospinosus	0.62	0.38
+Cardiocondyla.obscurior	0.0	1.0
+Aphaenogaster.senilis	0.68	0.32
+Pseudomyrmex.termitarius	0.01	0.99
+Atta.texana	0.47	0.53
+Myrmica.rubra	0.22	0.78
+Nylanderia.fulva	0.0	1.0
+Acromyrmex.subterraneus	0.28	0.72
+Lasius.brunneus	0.0	1.0
