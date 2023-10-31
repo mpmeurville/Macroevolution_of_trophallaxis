@@ -1,0 +1,20 @@
+#NEXUS
+
+Begin Pi;
+
+    Character: 0;
+
+    Default: Dirichlet(1);
+
+End;
+
+Begin Rates;
+
+    Character: 0;
+
+    Rates:
+ 	N > L : Gamma(2,2)
+ 	L > N : Equal(N > L)
+ 	; 
+
+End;

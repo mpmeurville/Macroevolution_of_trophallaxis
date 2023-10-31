@@ -1,0 +1,655 @@
+library(phytools)
+
+### Read tree
+
+  tree = read.tree("/media/meurvill/Elements/re-do_V2/00_dataset_production/output/tree_212.tre")
+
+# library(ggtree)
+# pdf("/media/marie-pierre/Elements/re-do_V1/01_Dtest_211sp_all_traits/02_get_nodes_values/output/gamma22tree_node_labels.pdf")
+# plot(tree, cex = .3, type = "fan")
+# nodelabels(text = tree$node.label,
+#            frame = "n", cex=0.3, col= "blue")
+# dev.off()
+
+
+### Extract nodes informations
+
+##### Trophallaxis #####
+
+nodes_troph = data.frame(matrix(vector(), 423, 4,
+                       dimnames=list(c(), c("nodeR", "sp1", "sp2", "troph"))),
+                stringsAsFactors=F)
+
+troph = read.csv("/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/troph.blended.smap.txt", header = F)
+
+counter = 0
+
+for(i in 1:nrow(troph)){
+  
+  if(grepl(pattern = "Node id:", x = troph$V1[i])){
+    
+    counter = counter +1
+    
+  }
+  
+  if(grepl(pattern = "Defining children: ", x = troph$V1[i])) {
+    
+    nodes_troph$sp1[counter] = strsplit(x = troph$V1[i], split = ": ")[[1]][2]
+    nodes_troph$sp2[counter] = strsplit(x = troph$V1[i+1], split = " ")[[1]][20]
+    
+  }
+  
+  if(grepl(pattern = "Leaf name: ", x = troph$V1[i])) {
+    
+    nodes_troph$sp1[counter] = strsplit(x = troph$V1[i], split = ": ")[[1]][2]
+
+    
+  }
+  
+  if(grepl(pattern = "    T: ", x = troph$V1[i] )){
+    
+    nodes_troph$troph[counter] = strsplit(x = troph$V1[i], split = "T: ")[[1]][2]
+
+  }
+}
+
+#install.packages("castor")
+library(castor)
+
+for(i in 1:nrow(nodes_troph)){
+  
+  if(!is.na(nodes_troph$sp2[i])){
+    nodes_troph$nodeR[i] = get_pairwise_mrcas(tree, nodes_troph$sp1[i], nodes_troph$sp2[i])
+  }
+
+  if(is.na(nodes_troph$sp2[i])){
+    nodes_troph$nodeR[i] = get_pairwise_mrcas(tree, nodes_troph$sp1[i], nodes_troph$sp1[i])
+  } 
+  
+}
+
+write.csv(nodes_troph, "/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/nodes_troph.csv", row.names = F)
+
+#################### Plotting the tree #########################
+
+library(pals)
+
+
+troph_value = as.data.frame(tree$edge)
+
+for (i in 1:nrow(troph_value)){
+  
+  troph_value$troph[i] = nodes_troph$troph[nodes_troph$nodeR == troph_value$V2[i]]
+  
+}
+
+
+pdf("/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/tree_color_troph.pdf", height = 100, width = 30)
+plotBranchbyTrait(tree, as.numeric(troph_value$troph), mode = "edge", cex = 1.5, palette = colorRampPalette(c("black","gray99","firebrick1")), edge.width = 5)
+dev.off()
+
+
+##### Spermatheca #####
+
+nodes_sp = data.frame(matrix(vector(), 423, 4,
+                                dimnames=list(c(), c("nodeR", "sp1", "sp2", "sperm"))),
+                         stringsAsFactors=F)
+
+sperm = read.csv("/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/sperm.blended.smap.txt", header = F)
+
+counter = 0
+
+for(i in 1:nrow(sperm)){
+  
+  if(grepl(pattern = "Node id:", x = sperm$V1[i])){
+    
+    counter = counter +1
+    
+  }
+  
+  if(grepl(pattern = "Defining children: ", x = sperm$V1[i])) {
+    
+    nodes_sp$sp1[counter] = strsplit(x = sperm$V1[i], split = ": ")[[1]][2]
+    nodes_sp$sp2[counter] = strsplit(x = sperm$V1[i+1], split = " ")[[1]][20]
+    
+  }
+  
+  if(grepl(pattern = "Leaf name: ", x = sperm$V1[i])) {
+    
+    nodes_sp$sp1[counter] = strsplit(x = sperm$V1[i], split = ": ")[[1]][2]
+    
+    
+  }
+  
+  if(grepl(pattern = "    U: ", x = sperm$V1[i] )){
+    
+    nodes_sp$sperm[counter] = strsplit(x = sperm$V1[i], split = "U: ")[[1]][2]
+    
+  }
+}
+
+#install.packages("castor")
+library(castor)
+
+for(i in 1:nrow(nodes_sp)){
+  
+  if(!is.na(nodes_sp$sp2[i])){
+    nodes_sp$nodeR[i] = get_pairwise_mrcas(tree, nodes_sp$sp1[i], nodes_sp$sp2[i])
+  }
+  
+  if(is.na(nodes_sp$sp2[i])){
+    nodes_sp$nodeR[i] = get_pairwise_mrcas(tree, nodes_sp$sp1[i], nodes_sp$sp1[i])
+  } 
+  
+}
+
+write.csv(nodes_sp, "/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/nodes_sp.csv", row.names = F)
+
+
+#################### Plotting the tree #########################
+
+library(pals)
+
+
+sperm_value = as.data.frame(tree$edge)
+
+for (i in 1:nrow(sperm_value)){
+  
+  sperm_value$sperm[i] = nodes_sp$sperm[nodes_sp$nodeR == sperm_value$V2[i]]
+  
+}
+
+
+library(pals)
+
+pdf("/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/tree_color_sperm.pdf", height = 100, width = 30)
+plotBranchbyTrait(tree, as.numeric(sperm_value$sperm), mode = "branch", cex = 1.5, palette = colorRampPalette(c("black","gray99","royalblue2")), edge.width = 5)
+dev.off()
+
+
+##### Clonal #####
+
+nodes_cl = data.frame(matrix(vector(), 423, 4,
+                             dimnames=list(c(), c("nodeR", "sp1", "sp2", "clonal"))),
+                      stringsAsFactors=F)
+
+clonal = read.csv("/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/clonal.blended.smap.txt", header = F)
+
+counter = 0
+
+for(i in 1:nrow(clonal)){
+  
+  if(grepl(pattern = "Node id:", x = clonal$V1[i])){
+    
+    counter = counter +1
+    
+  }
+  
+  if(grepl(pattern = "Defining children: ", x = clonal$V1[i])) {
+    
+    nodes_cl$sp1[counter] = strsplit(x = clonal$V1[i], split = ": ")[[1]][2]
+    nodes_cl$sp2[counter] = strsplit(x = clonal$V1[i+1], split = " ")[[1]][20]
+    
+  }
+  
+  if(grepl(pattern = "Leaf name: ", x = clonal$V1[i])) {
+    
+    nodes_cl$sp1[counter] = strsplit(x = clonal$V1[i], split = ": ")[[1]][2]
+    
+    
+  }
+  
+  if(grepl(pattern = "    C: ", x = clonal$V1[i] )){
+    
+    nodes_cl$clonal[counter] = strsplit(x = clonal$V1[i], split = "C: ")[[1]][2]
+    
+  }
+}
+
+#install.packages("castor")
+library(castor)
+
+for(i in 1:nrow(nodes_cl)){
+  
+  if(!is.na(nodes_cl$sp2[i])){
+    nodes_cl$nodeR[i] = get_pairwise_mrcas(tree, nodes_cl$sp1[i], nodes_cl$sp2[i])
+  }
+  
+  if(is.na(nodes_cl$sp2[i])){
+    nodes_cl$nodeR[i] = get_pairwise_mrcas(tree, nodes_cl$sp1[i], nodes_cl$sp1[i])
+  } 
+  
+}
+
+write.csv(nodes_cl, "/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/nodes_clonal.csv", row.names = F)
+
+
+#################### Plotting the tree #########################
+
+library(pals)
+
+
+cl_value = as.data.frame(tree$edge)
+
+for (i in 1:nrow(cl_value)){
+  
+  cl_value$clonal[i] = nodes_cl$clonal[nodes_cl$nodeR == cl_value$V2[i]]
+  
+}
+
+library(pals)
+
+pdf("/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/tree_color_clonal.pdf", height = 100, width = 30)
+plotBranchbyTrait(tree, as.numeric(cl_value$clonal), mode = "branch", cex = 1.5, palette = colorRampPalette(c("black","gray99","magenta")), edge.width = 5)
+dev.off()
+
+
+##### Sting #####
+
+nodes_sting = data.frame(matrix(vector(), 423, 4,
+                             dimnames=list(c(), c("nodeR", "sp1", "sp2", "sting"))),
+                      stringsAsFactors=F)
+
+sting = read.csv("/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/sting.blended.smap.txt", header = F)
+
+counter = 0
+
+for(i in 1:nrow(sting)){
+  
+  if(grepl(pattern = "Node id:", x = sting$V1[i])){
+    
+    counter = counter +1
+    
+  }
+  
+  if(grepl(pattern = "Defining children: ", x = sting$V1[i])) {
+    
+    nodes_sting$sp1[counter] = strsplit(x = sting$V1[i], split = ": ")[[1]][2]
+    nodes_sting$sp2[counter] = strsplit(x = sting$V1[i+1], split = " ")[[1]][20]
+    
+  }
+  
+  if(grepl(pattern = "Leaf name: ", x = sting$V1[i])) {
+    
+    nodes_sting$sp1[counter] = strsplit(x = sting$V1[i], split = ": ")[[1]][2]
+    
+    
+  }
+  
+  if(grepl(pattern = "    S: ", x = sting$V1[i] )){
+    
+    nodes_sting$sting[counter] = strsplit(x = sting$V1[i], split = "S: ")[[1]][2]
+    
+  }
+}
+
+#install.packages("castor")
+library(castor)
+
+for(i in 1:nrow(nodes_sting)){
+  
+  if(!is.na(nodes_sting$sp2[i])){
+    nodes_sting$nodeR[i] = get_pairwise_mrcas(tree, nodes_sting$sp1[i], nodes_sting$sp2[i])
+  }
+  
+  if(is.na(nodes_sting$sp2[i])){
+    nodes_sting$nodeR[i] = get_pairwise_mrcas(tree, nodes_sting$sp1[i], nodes_sting$sp1[i])
+  } 
+  
+}
+
+write.csv(nodes_sting, "/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/nodes_sting.csv", row.names = F)
+
+
+#################### Plotting the tree #########################
+
+library(pals)
+
+
+sting_value = as.data.frame(tree$edge)
+
+for (i in 1:nrow(sting_value)){
+  
+  sting_value$sting[i] = nodes_sting$sting[nodes_sting$nodeR == sting_value$V2[i]]
+  
+}
+
+library(pals)
+
+pdf("/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/tree_color_sting.pdf", height = 100, width = 30)
+plotBranchbyTrait(tree, as.numeric(sting_value$sting), mode = "branch", cex = 1.5, palette = colorRampPalette(c("black","gray99","purple")), edge.width = 5)
+dev.off()
+
+
+##### Liquid food #####
+
+nodes_liq = data.frame(matrix(vector(), 423, 4,
+                                dimnames=list(c(), c("nodeR", "sp1", "sp2", "liq"))),
+                         stringsAsFactors=F)
+
+liq = read.csv("/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/liq.blended.smap.txt", header = F)
+
+counter = 0
+
+for(i in 1:nrow(liq)){
+  
+  if(grepl(pattern = "Node id:", x = liq$V1[i])){
+    
+    counter = counter +1
+    
+  }
+  
+  if(grepl(pattern = "Defining children: ", x = liq$V1[i])) {
+    
+    nodes_liq$sp1[counter] = strsplit(x = liq$V1[i], split = ": ")[[1]][2]
+    nodes_liq$sp2[counter] = strsplit(x = liq$V1[i+1], split = " ")[[1]][20]
+    
+  }
+  
+  if(grepl(pattern = "Leaf name: ", x = liq$V1[i])) {
+    
+    nodes_liq$sp1[counter] = strsplit(x = liq$V1[i], split = ": ")[[1]][2]
+    
+    
+  }
+  
+  if(grepl(pattern = "    L: ", x = liq$V1[i] )){
+    
+    nodes_liq$liq[counter] = strsplit(x = liq$V1[i], split = "L: ")[[1]][2]
+    
+  }
+}
+
+#install.packages("castor")
+library(castor)
+
+for(i in 1:nrow(nodes_liq)){
+  
+  if(!is.na(nodes_liq$sp2[i])){
+    nodes_liq$nodeR[i] = get_pairwise_mrcas(tree, nodes_liq$sp1[i], nodes_liq$sp2[i])
+  }
+  
+  if(is.na(nodes_liq$sp2[i])){
+    nodes_liq$nodeR[i] = get_pairwise_mrcas(tree, nodes_liq$sp1[i], nodes_liq$sp1[i])
+  } 
+  
+}
+
+write.csv(nodes_liq, "/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/nodes_liq.csv", row.names = F)
+
+
+#################### Plotting the tree #########################
+
+library(pals)
+
+
+liq_value = as.data.frame(tree$edge)
+
+for (i in 1:nrow(liq_value)){
+  
+  liq_value$liq[i] = nodes_liq$liq[nodes_liq$nodeR == liq_value$V2[i]]
+  
+}
+
+
+pdf("/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/tree_color_liq.pdf", height = 100, width = 30)
+plotBranchbyTrait(tree, as.numeric(liq_value$liq), mode = "branch", cex = 1.5, palette = colorRampPalette(c("black","hotpink","goldenrod2")), edge.width = 5)
+dev.off()
+
+
+
+##### Ovaries #####
+
+nodes_ova = data.frame(matrix(vector(), 423, 4,
+                              dimnames=list(c(), c("nodeR", "sp1", "sp2", "ova"))),
+                       stringsAsFactors=F)
+
+ova = read.csv("/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/ovar.blended.smap.txt", header = F)
+
+counter = 0
+
+for(i in 1:nrow(ova)){
+  
+  if(grepl(pattern = "Node id:", x = ova$V1[i])){
+    
+    counter = counter +1
+    
+  }
+  
+  if(grepl(pattern = "Defining children: ", x = ova$V1[i])) {
+    
+    nodes_ova$sp1[counter] = strsplit(x = ova$V1[i], split = ": ")[[1]][2]
+    nodes_ova$sp2[counter] = strsplit(x = ova$V1[i+1], split = " ")[[1]][20]
+    
+  }
+  
+  if(grepl(pattern = "Leaf name: ", x = ova$V1[i])) {
+    
+    nodes_ova$sp1[counter] = strsplit(x = ova$V1[i], split = ": ")[[1]][2]
+    
+    
+  }
+  
+  if(grepl(pattern = "    O: ", x = ova$V1[i] )){
+    
+    nodes_ova$ova[counter] = strsplit(x = ova$V1[i], split = "O: ")[[1]][2]
+    
+  }
+}
+
+#install.packages("castor")
+library(castor)
+
+for(i in 1:nrow(nodes_ova)){
+  
+  if(!is.na(nodes_ova$sp2[i])){
+    nodes_ova$nodeR[i] = get_pairwise_mrcas(tree, nodes_ova$sp1[i], nodes_ova$sp2[i])
+  }
+  
+  if(is.na(nodes_ova$sp2[i])){
+    nodes_ova$nodeR[i] = get_pairwise_mrcas(tree, nodes_ova$sp1[i], nodes_ova$sp1[i])
+  } 
+  
+}
+
+write.csv(nodes_ova, "/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/nodes_ova.csv", row.names = F)
+
+
+#################### Plotting the tree #########################
+
+library(pals)
+
+
+ova_value = as.data.frame(tree$edge)
+
+for (i in 1:nrow(ova_value)){
+  
+  ova_value$ova[i] = nodes_ova$ova[nodes_ova$nodeR == ova_value$V2[i]]
+  
+}
+
+
+pdf("/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/tree_color_ova.pdf", height = 100, width = 30)
+plotBranchbyTrait(tree, as.numeric(ova_value$ova), mode = "branch", cex = 1.5, palette = colorRampPalette(c("black","gray99","palegreen3")), edge.width = 5)
+dev.off()
+
+##### Size #####
+
+nodes_s = data.frame(matrix(vector(), 423, 6,
+                              dimnames=list(c(), c("nodeR", "sp1", "sp2", "s", "m", "l"))),
+                       stringsAsFactors=F)
+
+s = read.csv("/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/size.blended.smap.txt", header = F)
+
+counter = 0
+
+for(i in 1:nrow(s)){
+  
+  if(grepl(pattern = "Node id:", x = s$V1[i])){
+    
+    counter = counter +1
+    
+  }
+  
+  if(grepl(pattern = "Defining children: ", x = s$V1[i])) {
+    
+    nodes_s$sp1[counter] = strsplit(x = s$V1[i], split = ": ")[[1]][2]
+    nodes_s$sp2[counter] = strsplit(x = s$V1[i+1], split = " ")[[1]][20]
+    
+  }
+  
+  if(grepl(pattern = "Leaf name: ", x = s$V1[i])) {
+    
+    nodes_s$sp1[counter] = strsplit(x = s$V1[i], split = ": ")[[1]][2]
+    
+    
+  }
+  
+  if(grepl(pattern = "    S: ", x = s$V1[i] )){
+    
+    nodes_s$s[counter] = strsplit(x = s$V1[i], split = "S: ")[[1]][2]
+    
+  }
+  
+  
+  if(grepl(pattern = "    M: ", x = s$V1[i] )){
+    
+    nodes_s$m[counter] = strsplit(x = s$V1[i], split = "M: ")[[1]][2]
+  }
+  
+  
+  if(grepl(pattern = "    L: ", x = s$V1[i] )){
+    
+    nodes_s$l[counter] = strsplit(x = s$V1[i], split = "L: ")[[1]][2]
+  }}
+  
+
+#install.packages("castor")
+library(castor)
+
+for(i in 1:nrow(nodes_s)){
+  
+  if(!is.na(nodes_s$sp2[i])){
+    nodes_s$nodeR[i] = get_pairwise_mrcas(tree, nodes_s$sp1[i], nodes_s$sp2[i])
+  }
+  
+  if(is.na(nodes_s$sp2[i])){
+    nodes_s$nodeR[i] = get_pairwise_mrcas(tree, nodes_s$sp1[i], nodes_s$sp1[i])
+  } 
+  
+}
+
+write.csv(nodes_s, "/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/nodes_size.csv", row.names = F)
+
+
+#################### Plotting the tree #########################
+# 
+# library(pals)
+# 
+# 
+# s_value = as.data.frame(tree$edge)
+# 
+# for (i in 1:nrow(s_value)){
+#   
+#   s_value$s[i] = nodes_s$s[nodes_s$nodeR == s_value$V2[i]]
+#   s_value$m[i] = nodes_s$m[nodes_s$nodeR == s_value$V2[i]]
+#   s_value$l[i] = nodes_s$l[nodes_s$nodeR == s_value$V2[i]]
+#   
+#   
+# }
+# 
+# 
+# pdf("/media/marie-pierre/Elements/re-do_V1/01_Dtest_211sp_all_traits/02_get_nodes_values/output/gamma22tree_color_ova.pdf", height = 100, width = 30)
+# plotBranchbyTrait(tree, as.numeric(s_value$s), mode = "branch", cex = 1.5, palette = colorRampPalette(c("black","gray99","palegreen3")), edge.width = 5)
+# dev.off()
+
+##### OvSp combination #####
+
+nodes_s = data.frame(matrix(vector(), 423, 6,
+                            dimnames=list(c(), c("nodeR", "sp1", "sp2", "s", "r", "g"))),
+                     stringsAsFactors=F)
+
+s = read.csv("/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/gam.blended.smap.txt", header = F)
+
+counter = 0
+
+for(i in 1:nrow(s)){
+  
+  if(grepl(pattern = "Node id:", x = s$V1[i])){
+    
+    counter = counter +1
+    
+  }
+  
+  if(grepl(pattern = "Defining children: ", x = s$V1[i])) {
+    
+    nodes_s$sp1[counter] = strsplit(x = s$V1[i], split = ": ")[[1]][2]
+    nodes_s$sp2[counter] = strsplit(x = s$V1[i+1], split = " ")[[1]][20]
+    
+  }
+  
+  if(grepl(pattern = "Leaf name: ", x = s$V1[i])) {
+    
+    nodes_s$sp1[counter] = strsplit(x = s$V1[i], split = ": ")[[1]][2]
+    
+    
+  }
+  
+  if(grepl(pattern = "    S: ", x = s$V1[i] )){
+    
+    nodes_s$s[counter] = strsplit(x = s$V1[i], split = "S: ")[[1]][2]
+    
+  }
+  
+  
+  if(grepl(pattern = "    R: ", x = s$V1[i] )){
+    
+    nodes_s$r[counter] = strsplit(x = s$V1[i], split = "R: ")[[1]][2]
+  }
+  
+  
+  if(grepl(pattern = "    G: ", x = s$V1[i] )){
+    
+    nodes_s$g[counter] = strsplit(x = s$V1[i], split = "G: ")[[1]][2]
+  }}
+
+
+#install.packages("castor")
+library(castor)
+
+for(i in 1:nrow(nodes_s)){
+  
+  if(!is.na(nodes_s$sp2[i])){
+    nodes_s$nodeR[i] = get_pairwise_mrcas(tree, nodes_s$sp1[i], nodes_s$sp2[i])
+  }
+  
+  if(is.na(nodes_s$sp2[i])){
+    nodes_s$nodeR[i] = get_pairwise_mrcas(tree, nodes_s$sp1[i], nodes_s$sp1[i])
+  } 
+  
+}
+
+write.csv(nodes_s, "/media/meurvill/Elements/re-do_V2/01_Dtest_211sp_all_traits/02_get_nodes_values/output/nodes_gam.csv", row.names = F)
+
+
+#################### Plotting the tree #########################
+# 
+# library(pals)
+# 
+# 
+# s_value = as.data.frame(tree$edge)
+# 
+# for (i in 1:nrow(s_value)){
+#   
+#   s_value$s[i] = nodes_s$s[nodes_s$nodeR == s_value$V2[i]]
+#   s_value$m[i] = nodes_s$m[nodes_s$nodeR == s_value$V2[i]]
+#   s_value$l[i] = nodes_s$l[nodes_s$nodeR == s_value$V2[i]]
+#   
+#   
+# }
+# 
+# 
+# pdf("/media/marie-pierre/Elements/re-do_V1/01_Dtest_211sp_all_traits/02_get_nodes_values/output/gamma22tree_color_ova.pdf", height = 100, width = 30)
+# plotBranchbyTrait(tree, as.numeric(s_value$s), mode = "branch", cex = 1.5, palette = colorRampPalette(c("black","gray99","palegreen3")), edge.width = 5)
+# dev.off()
+

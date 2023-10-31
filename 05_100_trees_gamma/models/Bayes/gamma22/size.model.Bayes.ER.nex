@@ -1,0 +1,24 @@
+#NEXUS
+
+Begin Pi;
+
+    Character: 0;
+
+    Default: Dirichlet(1);
+
+End;
+
+Begin Rates;
+
+    Character: 0;
+
+    Rates:
+ 	S > L : Equal(S > M)
+ 	S > M : Gamma(2,2)
+ 	L > S : Equal(S > M)
+ 	L > M : Equal(S > M)
+ 	M > S : Equal(S > M)
+ 	M > L : Equal(S > M)
+ 	; 
+
+End;

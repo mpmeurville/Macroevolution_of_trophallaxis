@@ -1,0 +1,23 @@
+#NEXUS
+
+Begin Pi;
+
+    Character: 0;
+
+    Fixed:
+	T: 0.99999999
+	N: 0.00000001
+;
+
+End;
+
+Begin Rates;
+
+    Character: 0;
+
+    Rates:
+ 	N > T : Gamma(2,2)
+ 	T > N : Gamma(2,2)
+ 	; 
+
+End;

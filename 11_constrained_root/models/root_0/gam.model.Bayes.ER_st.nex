@@ -1,0 +1,28 @@
+#NEXUS
+
+Begin Pi;
+
+    Character: 0;
+
+     Fixed:
+	G: 0.00000001
+	R: 0.00000001
+	S: 0.99999998
+;
+
+End;
+
+Begin Rates;
+
+    Character: 0;
+
+    Rates:
+ 	R > G : Equal(S > G)
+ 	R > S : Equal(S > G)
+ 	G > R : Equal(S > G)
+ 	G > S : Equal(S > G)
+ 	S > R : Equal(S > G)
+ 	S > G : Gamma(2,2)
+ 	; 
+
+End;
