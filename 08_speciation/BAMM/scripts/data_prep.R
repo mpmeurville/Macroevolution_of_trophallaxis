@@ -5,10 +5,25 @@ library(stringr)
 
 
 ### Get the pruned tree and the data well formatted. 
-tree = read.tree("E:/re-do_V2/08_speciation/BAMM/input/tree_417_norm_validNames.tre")
-dat = read.table("E:/re-do_V2/04_Dtest_417sp_all_traits/input/troph_417.txt", header = T)
+tree = read.tree("E:/re-do_V2_Macroevolution/00_dataset_production/output/tree_417.tre")
+
+dat = read.table("E:/re-do_V2_Macroevolution/04_Dtest_417sp_all_traits/input/troph_417.txt", header = T)
 colnames(dat) = c("species", "troph")
 
+# plot(tree)
+# edgelabels(round(tree$edge.length, 2),bg = F, col="blue", font=.02)
+# 
+# 
+# for(i in 1:length(tree$tip.label)){
+# 
+#   if(! tree$tip.label[i] %in% dat$species){print(tree$tip.label[i])}
+# 
+# }
+
+
+tree$tip.label[tree$tip.label == "Aphaenogaster.cockerelli"] = "Novomessor.cockerelli"
+
+write.tree(tree, "E:/re-do_V2_Macroevolution/08_speciation/BAMM/input/tree_417.tre")
 
 dat$troph[dat$troph == "T"] <- 1
 dat$troph[dat$troph == "N"] <- 0
@@ -22,12 +37,12 @@ dat$troph[i] =  strsplit(strsplit(strsplit(dat$troph[i], ",")[[1]][2], ":")[[1]]
 }
 
 dat$troph = round(as.numeric(dat$troph))
-write.csv(dat, "E:/re-do_V2/08_speciation/BAMM/input/input_binary.csv", row.names = F)
+write.csv(dat, "E:/re-do_V2_Macroevolution/08_speciation/BAMM/input/input_binary.csv", row.names = F)
 
 
 ### Estimate the sampling fraction for each species, genus based. 
 
-valid_sp = read.table("E:/re-do_V2/08_speciation/BAMM/input/valid_species.txt", sep = "{",header = T)
+valid_sp = read.table("E:/re-do_V2_Macroevolution/08_speciation/BAMM/input/valid_species.txt", sep = "{",header = T)
 
 drops = c( "Tribe", "SpeciesGroup","Species", "Binomial","BinomialAuthority","Subspecies","Trinomial","TrinomialAuthority","Author", "Year","ChangedComb","TypeLocalityCountry")
 
@@ -51,19 +66,21 @@ drops = c("Subfamily", "genus", "troph")
 res = res[ , -which(names(res) %in% drops)]
 
 
-write.table(res, "E:/re-do_V2/08_speciation/BAMM/input/sampling_frac_genus.txt", quote = F, row.names = F, col.names = F, sep = "\t")
-# Then ,,in the file, add 1.0 as the first row. 
+write.table(res, "E:/re-do_V2_Macroevolution/08_speciation/BAMM/input/sampling_frac_genus.txt", quote = F, row.names = F, col.names = F, sep = "\t")
+# Then,in the file, add 1.0 as the first row. 
 
 
 ### Get the priors for the analysis
-setwd("E:/re-do_V2/08_speciation/BAMM/input")
-setBAMMpriors(read.tree("E:/re-do_V2/00_dataset_production/output/tree_417_norm_validNames.tre"))
+setwd("E:/re-do_V2_Macroevolution/08_speciation/BAMM/input")
+setBAMMpriors(read.tree("E:/re-do_V2_Macroevolution/00_dataset_production/output/tree_417.tre"))
 
 ### check tree is ok
 
 library(ape)
 is.ultrametric(tree)
 is.binary(tree)
+
 # Now to check min branch length:
 min(tree$edge.length)
+max(tree$edge.length)
 

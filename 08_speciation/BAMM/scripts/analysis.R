@@ -4,10 +4,10 @@ require(coda)
 require(ape)
 
 ### Change working directory
-setwd("/media/marie-pierre/Elements/re-do_V2/08_speciation/BAMM/")
+setwd("E:/re-do_V2_Macroevolution/08_speciation/BAMM/")
 
 ### Load tree
-tree <- read.tree("input/tree_417_norm_validNames.tre")
+tree <- read.tree("input/tree_417.tre")
 
 ### Import data for the combined trophallaxis trait
 troph.traits <- read.csv("input/input_binary.csv", row.names = 1)
@@ -17,15 +17,19 @@ library(tidyverse)
 
 
 ### Import data from BAMM run
-mcmcout <- read.csv("output/mcmc_out_ReDo.txt", header = T)
+mcmcout <- read.csv("output/non_norm_tree/mcmc_out_ReDo.txt", header = T)
 
 ### Check for convergence
 
 burnstart <- floor(0.1 * nrow(mcmcout))
 plot(mcmcout$logLik ~ mcmcout$generation,pch=19)
 
+plot(mcmcout$logLik )
+
+
 postburn <- mcmcout[burnstart:nrow(mcmcout), ]
 mcmcout[burnstart:nrow(mcmcout),]
+plot(postburn$logLik)
 
 # Get effective sample size (ESS). Should be > 200
 effectiveSize(postburn$logLik)
@@ -34,7 +38,7 @@ effectiveSize(postburn$N_shifts)
 # -> The analysis converged well.
 
 ### Create bammdata object.
-event <- getEventData(tree, "output/event_data_ReDo.txt", burnin = 0.1)
+event <- getEventData(tree, "output/non_norm_tree/event_data_ReDo.txt", burnin = 0.1)
 
 ### How many rate shifts?
 post_probs <- table(postburn$N_shifts) / nrow(postburn)
@@ -78,7 +82,7 @@ cat("mu: mean",mean(rateTroph$mu),"sd",sd(rateTroph$mu)) # mu: A vector of extin
 cat("mean r1-r0:",mean((rateTroph$lambda-rateTroph$mu)-(rateNoTroph$lambda-rateNoTroph$mu)),"sd",sd((rateTroph$lambda-rateTroph$mu)-(rateNoTroph$lambda-rateNoTroph$mu)))
 
 
-plotRateThroughTime(event, ratetype="speciation")
+# plotRateThroughTime(event, ratetype="speciation")
 # # For the SAC origin (node 425)
 # library(phytools)
 # 
@@ -110,24 +114,24 @@ troph_sorted <- troph.traits[tree$tip.label,]
 names(troph_sorted) <- tree$tip.label
 
 STRAPP_netD <- traitDependentBAMM(event, as.factor(troph_sorted), reps = 10000, rate = "net diversification", return.full = TRUE, method = 'm', logrates = FALSE,
-                                  two.tailed = TRUE, )
+                                  two.tailed = TRUE )
 STRAPP_netD$p.value
 
 
 STRAPP_Sp <- traitDependentBAMM(event, as.factor(troph_sorted), reps = 10000, rate = "speciation", return.full = TRUE, method = 'm', logrates = FALSE,
-                                two.tailed = TRUE, )
+                                two.tailed = TRUE )
 STRAPP_Sp$p.value
 
 
 STRAPP_Ex <- traitDependentBAMM(event, as.factor(troph_sorted), reps = 10000, rate = "extinction", return.full = TRUE, method = 'm', logrates = FALSE,
-                                two.tailed = TRUE, )
+                                two.tailed = TRUE )
 STRAPP_Ex$p.value
 
 
 
-saveRDS(STRAPP_netD, file="output/BAMM_STRAPP_netD_redo.rds")
-saveRDS(STRAPP_Sp, file="output/BAMM_STRAPP_Sp_redo.rds")
-saveRDS(STRAPP_Ex, file="output/BAMM_STRAPP_Ex_redo.rds")
+saveRDS(STRAPP_netD, file="output/non_norm_tree/BAMM_STRAPP_netD_redo.rds")
+saveRDS(STRAPP_Sp, file="output/non_norm_tree/BAMM_STRAPP_Sp_redo.rds")
+saveRDS(STRAPP_Ex, file="output/non_norm_tree/BAMM_STRAPP_Ex_redo.rds")
 
-save.image(file = "output/BAMM_analysis_redo.RData")
+save.image(file = "output/non_norm_tree/BAMM_analysis_redo.RData")
 

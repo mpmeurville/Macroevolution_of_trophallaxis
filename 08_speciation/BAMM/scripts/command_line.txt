@@ -1,2 +1,2 @@
 Comand line: 
-E:\re-do_V2\08_speciation\BAMM\bamm-2.5.0-Windows\bamm.exe -c E:\re-do_V2\08_speciation\BAMM\input\ControlFile_redo.txt
+E:\re-do_V2_Macroevolution\08_speciation\BAMM\bamm-2.5.0-Windows\bamm.exe -c E:\re-do_V2_Macroevolution\08_speciation\BAMM\input\ControlFile_redo.txt
