@@ -5,26 +5,26 @@ library(ape)
 library(dplyr)
 
 
-my_tree <- read.tree('E://re-do_V2_Macroevolution//00_dataset_production/output/tree_212.tre') # For Newick format trees
+my_tree <- read.tree('/media/marie-pierre/Elements/re-do_V2_Macroevolution//00_dataset_production/output/tree_212.tre') # For Newick format trees
 
 #my_data = read.csv("/home/marie-pierre/Documents/PhD/communication/trophallaxis_correlation_diet/evolutionnary_analysis/plot_of_hell/01_not_binarized_nodes/not_binarized_nodes.csv")
 
 ### 212 sp
-cl = read.csv("E://re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/clonal_212.txt", sep = "\t")
+cl = read.csv("/media/marie-pierre/Elements//re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/clonal_212.txt", sep = "\t")
 colnames(cl)[2] = "cl"
-liq = read.csv("E://re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/liq_212.txt", sep = "\t")
+liq = read.csv("/media/marie-pierre/Elements//re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/liq_212.txt", sep = "\t")
 colnames(liq)[2] = "liq"
-ova = read.csv("E://re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/ova_212.txt", sep = "\t")
+ova = read.csv("/media/marie-pierre/Elements//re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/ova_212.txt", sep = "\t")
 colnames(ova)[2] = "ova"
-spe = read.csv("E://re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/sperm_212.txt", sep = "\t")
+spe = read.csv("/media/marie-pierre/Elements//re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/sperm_212.txt", sep = "\t")
 colnames(spe)[2] = "spe"
-st = read.csv("E://re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/sting_212.txt", sep = "\t")
+st = read.csv("/media/marie-pierre/Elements//re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/sting_212.txt", sep = "\t")
 colnames(st)[2] = "st"
-tro = read.csv("E://re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/troph_212.txt", sep = "\t")
+tro = read.csv("/media/marie-pierre/Elements//re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/troph_212.txt", sep = "\t")
 colnames(tro)[2] = "tro"
-gam = read.csv("E://re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/GamOvSt_212.txt", sep = "\t")
+gam = read.csv("/media/marie-pierre/Elements//re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/GamOvSt_212.txt", sep = "\t")
 colnames(gam)[2] = "gam"
-siz = read.csv("E://re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/col_212.txt", sep = "\t")
+siz = read.csv("/media/marie-pierre/Elements//re-do_V2_Macroevolution//01_Dtest_211sp_all_traits/input/col_212.txt", sep = "\t")
 colnames(siz)[2] = "siz"
 
 
@@ -118,7 +118,7 @@ my_data$tro = gsub(pattern = "T", replacement = "1", x = my_data$tro)
 # )
 # 
 # 
-# pdf("E://re-do_V2_Macroevolution//03_PGLS_212/output/model_plot_ScsTG.pdf", height = 12, width = 12)
+# pdf("D://re-do_V2_Macroevolution//03_PGLS_212/output/model_plot_ScsTG.pdf", height = 12, width = 12)
 # plot_model_set(models, manual_layout = positions, edge_width = 0.5)
 # dev.off()
 # 
@@ -338,34 +338,93 @@ my_data$tro = gsub(pattern = "T", replacement = "1", x = my_data$tro)
 # 
 
 
+
+###### Only models of interest
+
+models <- define_model_set(
+  #b = c(g~tro, liq~tro, l~tro, st~liq), # Troph first
+  c = c(tro~g, st~g, l~g, liq~tro), # Conflict hypothesis
+  d = c(st ~liq, tro~liq, l~tro + liq, g~g), # Eco opportunism hypothesis
+  e = c(l~g + liq, tro~l, st~st), # Colony size first
+  f = c(st~g, liq~st, tro~liq, l~l),
+  #bp = c(tro~g, liq~tro, l~tro, st~liq), # Troph first
+  #bt = c(tro~g, liq~tro, l~tro + liq, st~liq), # Troph first
+  
+  .common = NULL # Things common to all models, basically something known already. Here we have none.
+)
+
+# models$zero
+
+positions <- data.frame(
+  name = c("tro", "liq", "g", "l", "st"),
+  x = c(1.5,1.75,1.25,1.5,1.5),
+  y = c(2.25, 2.5, 2.5, 2.5, 2.75)
+)
+
+
+pdf("/media/marie-pierre/Elements//re-do_V2_Macroevolution//03_PGLS_212/output/last_models/5_models_plot.pdf", height = 12, width = 12)
+plot_model_set(models, manual_layout = positions, edge_width = 0.5)
+dev.off()
+
+
+result <- phylo_path(models, data = my_data, tree = my_tree)
+# show_warnings()
+# warnings() # Only solution here : https://github.com/lamho86/phylolm/issues/3
+#result
+
+s <- summary(result)
+s
+
+pdf("/media/marie-pierre/Elements//re-do_V2_Macroevolution/03_PGLS_212/output/last_models/5_models_PGLS_barchart.pdf")
+plot(s)
+dev.off()
+
+### Model averaging
+
+#best_model <- best(result)
+#plot(best_model, type = "color" ,show.legend = T, edge_width = .5)
+
+
+# Check delta CICcs.
+average_model <- average(result, cut_off = 15) # Take models with delta CIC < 2. 
+
+av_model_ColTroGam <- average_model
+
+# plot(average_model, algorithm = 'mds', curvature = 0.1) # increase the curvature to avoid overlapping edges
+pdf("/media/marie-pierre/Elements//re-do_V2_Macroevolution//03_PGLS_212/output/last_models/all_models_CIC15/5_models_averaged.pdf")
+plot(average_model, type = "color" ,show.legend = T, edge_width = .5)
+dev.off()
+
+pdf("/media/marie-pierre/Elements//re-do_V2_Macroevolution//03_PGLS_212/output/last_models/all_models_CIC15/5_models_averaged_CI.pdf")
+coef_plot(average_model,error_bar = "ci",order_by="strength",to=NULL) + ggplot2::coord_flip() # plot the standardized regression coefficient: I guess the values of the coefficients and their standard error.
+dev.off()
+
+average_model
+
+CI_l = average_model$lower
+write.csv(CI_l, "/media/marie-pierre/Elements//re-do_V2_Macroevolution//03_PGLS_212/output/last_models/all_models_CIC15/5_models_av_CI-lower.csv")
+
+CI_u = average_model$upper
+write.csv(CI_u, "/media/marie-pierre/Elements//re-do_V2_Macroevolution//03_PGLS_212/output/last_models/all_models_CIC15/5_models_av_CI-upper.csv")
+
+
+
 ###### All traits of interest
 
 models <- define_model_set(
-  one = c(tro~g+liq, l~tro, liq~st),
-  two = c(tro~g+liq, l~tro, st~liq),
-  three = c(tro~g+liq+l, liq~st), 
-  four = c(tro~g+liq+l, st~liq),
-  five = c(tro~g, l~tro, liq~tro, st~liq),
-  six = c(tro~g, l~tro, liq~tro+st),
-  seven = c(tro~g+l, liq~tro, st~liq),
-  eight = c(tro~g +l, liq~tro+st),
-  nine = c(tro~g, st~g, liq~tro, l~tro),
-  ten = c(tro~g + liq, st~g, l~tro),
-  eleven = c(tro~g+l, liq~tro, st~g),
-  #twelve = c(tro~g+l+liq, st~g),  # Removed because when in, weird error. If we comment three or four, it also solves the pb, but twelve is less likely?
-  Bone = c(tro~liq, g~tro, l~tro, liq~st),
-  Btwo = c(tro~liq, g~tro, l~tro, st~liq),
-  Bthree = c(tro~liq+l, g~tro,liq~st),
-  Bfour = c(tro~liq+l, g~tro, st~liq),
-  Bfive = c(g~tro, l~tro, liq~tro, st~liq),
-  Bsix = c(g~tro, l~tro, liq~tro+st),
-  Bseven = c(tro~l, g~tro, liq~tro, st~liq),
-  Beight = c(tro~l,g~tro, liq~tro+st),
-  Bnine = c(g~tro, st~g, liq~tro, l~tro),
-  Bten = c(tro~ liq, g~tro, st~g, l~tro),
-  Beleven = c(tro~l, g~tro,liq~tro, st~g),
-  Btwelve = c(tro~l+liq, g~tro,st~g),
-  
+  a = c(tro~g+liq, l~tro, liq~st),
+  b = c(tro~g+liq, l~tro, st~liq),
+  c = c(tro~g, l~tro, liq~tro, st~liq),
+  d = c(tro~g, st~g, liq~tro, l~tro),
+  e = c(tro~g + liq, st~g, l~tro),
+  f = c(tro~liq, g~tro, l~tro, st~liq),
+  g = c(g~tro, l~tro, liq~tro, st~liq),
+  h = c(g~tro, st~g, liq~tro, l~tro),
+  i = c(tro~ liq, g~tro, st~g, l~tro),
+  j = c(tro~g+liq, l~tro, st~tro),
+  k = c(tro~g, l~tro, liq~tro, st~tro),
+  l = c(tro~liq, g~tro, l~tro, st~tro),
+  m = c(g~tro, l~tro, liq~tro, st~tro),
   
   
   .common = NULL # Things common to all models, basically something known already. Here we have none.
@@ -380,9 +439,9 @@ positions <- data.frame(
 )
 
 
-pdf("E://re-do_V2_Macroevolution//03_PGLS_212/output/all_model_plot.pdf", height = 12, width = 12)
+#pdf("D://re-do_V2_Macroevolution//03_PGLS_212/output/all_model_plot_2.pdf", height = 12, width = 12)
 plot_model_set(models, manual_layout = positions, edge_width = 0.5)
-dev.off()
+#dev.off()
 
 
 result <- phylo_path(models, data = my_data, tree = my_tree)
@@ -393,7 +452,7 @@ result <- phylo_path(models, data = my_data, tree = my_tree)
 s <- summary(result)
 s
 
-pdf("E://re-do_V2_Macroevolution/03_PGLS_212/output/all_PGLS_barchart.pdf")
+pdf("D://re-do_V2_Macroevolution/03_PGLS_212/output/all_PGLS_barchart.pdf")
 plot(s)
 dev.off()
 
@@ -405,21 +464,21 @@ average_model <- average(result, cut_off = 2) # Take models with delta CIC < 2.
 av_model_ColTroGam <- average_model
 
 # plot(average_model, algorithm = 'mds', curvature = 0.1) # increase the curvature to avoid overlapping edges
-pdf("E://re-do_V2_Macroevolution//03_PGLS_212/output/av_all_average_best_models.pdf")
+pdf("D://re-do_V2_Macroevolution//03_PGLS_212/output/av_all_average_best_models.pdf")
 plot(average_model, type = "color" ,show.legend = T, edge_width = .5)
 dev.off()
 
-pdf("E://re-do_V2_Macroevolution//03_PGLS_212/output/av_CI_all_PGLS_barchart.pdf")
+pdf("D://re-do_V2_Macroevolution//03_PGLS_212/output/av_CI_all_PGLS_barchart.pdf")
 coef_plot(average_model,error_bar = "ci",order_by="strength",to=NULL) + ggplot2::coord_flip() # plot the standardized regression coefficient: I guess the values of the coefficients and their standard error.
 dev.off()
 
 average_model
 
 CI_l = average_model$lower
-write.csv(CI_l, "E://re-do_V2_Macroevolution//03_PGLS_212/output/all_PGLS_averaged_CI-lower.csv")
+write.csv(CI_l, "D://re-do_V2_Macroevolution//03_PGLS_212/output/all_PGLS_averaged_CI-lower.csv")
 
 CI_u = average_model$upper
-write.csv(CI_u, "E://re-do_V2_Macroevolution//03_PGLS_212/output/all_PGLS_averaged_CI-upper.csv")
+write.csv(CI_u, "D://re-do_V2_Macroevolution//03_PGLS_212/output/all_PGLS_averaged_CI-upper.csv")
 
 
 
@@ -444,38 +503,77 @@ write.csv(CI_u, "E://re-do_V2_Macroevolution//03_PGLS_212/output/all_PGLS_averag
 
 ### Exploratory path analysis
 
-source("D://re-do_V2/03_PGLS_212/BEPA.R")
+source("D://re-do_V2_Macroevolution//03_PGLS_212/BEPA.R")
 
 colnames(my_data)[10:12] = c("ste", "lar", "med") # Rename to avoid some variable names being embeded in other
 
+
+
 # Started at 10h15 - finished at 13h21
-#models_string = get_all_models(c("lar", "sm", "g", "tro", "liq", "st"), exclusions = c("lar ~ sm", 
-#                                                                                       "sm ~ lar")) # Do not consider associations of small and large colony sizes for example
+# models_string = get_all_models(c("lar", "g", "tro", "liq", "st"), exclusions = c("liq ~ g", "lar~liq", "lar~g", 
+#                                                                                  "lar~st", "g~liq", "g~lar", "st~lar", 
+#                                                                                  "st~tro", "st~g"))
+
+models_string = get_all_models(c("lar", "g", "tro", "liq", "st"))
+
+save(models_string, file = "D://re-do_V2_Macroevolution//03_PGLS_212/models_all_traits.RData")
+#load(file = "D://re-do_V2_Macroevolution/03_PGLS_212/models_all.RData")
+
+
+# Now, remove unwanted edges
+
+## lar not produced by gam or sting
+
+models_string = models_string[!grepl(pattern = "g", models_string$lar),]
+models_string = models_string[!grepl(pattern = "st", models_string$lar),]
+
+## Liq not produced by gam
+models_string = models_string[!grepl(pattern = "g", models_string$liq),]
+
+## Troph not produced by st
+models_string = models_string[!grepl(pattern = "st", models_string$tro),]
+
+## Gam not produced by st, liq, large
+models_string = models_string[!grepl(pattern = "st", models_string$g),]
+models_string = models_string[!grepl(pattern = "liq", models_string$g),]
+models_string = models_string[!grepl(pattern = "lar", models_string$g),]
+
+## St not produced by large
+
+models_string = models_string[!grepl(pattern = "lar", models_string$st),]
+
+
+
 
 # save(models_string, file = "D://re-do_V2/03_PGLS_212/models_all.RData")
-load(file = "D://re-do_V2/03_PGLS_212/models_all.RData")
+# load(file = "D://re-do_V2/03_PGLS_212/models_all.RData")
+
+save(models_string, file = "D://re-do_V2_Macroevolution//03_PGLS_212/models_all_traits_reduced.RData")
+load(file = "D://re-do_V2_Macroevolution//03_PGLS_212/models_all_traits_reduced.RData")
 
 
-#models <- define_model_set(string2formula(models_string))
+### models <- define_model_set(string2formula(models_string)) Does not work
 
 # Started at 13h22- Finished overnight
-#models =  strings_to_model_sets(models_string, parallel = T, n_cores = 6)
+models =  strings_to_model_sets(models_string, parallel = T, n_cores = 6)
 
 
-# save(models, file = "D://re-do_V2/03_PGLS_212/models_matrix.RData")
-load(file = "D://re-do_V2/03_PGLS_212/models_matrix.RData")
+save(models, file = "D://re-do_V2_Macroevolution//03_PGLS_212/models_matrix_reduced.RData")
+load(file = "D://re-do_V2_Macroevolution//03_PGLS_212/models_matrix_reduced.RData")
 
-#plot_model_set(models, manual_layout = positions, edge_width = 0.5)
+pdf("D:/re-do_V2_Macroevolution/03_PGLS_212/output/all_models_reduced,pdf", height = 800, width = 800)
+plot_model_set(models)
+dev.off()
 
 # Started at 9h00 (21.06) - 09:00 (22.06 )
-#result <- phylo_path(models, data = my_data, tree = my_tree, btol = 10 )
-#save(result, file = "D://re-do_V2/03_PGLS_212/models_results.RData")
-load(file = "D://re-do_V2/03_PGLS_212/models_results.RData")
+result <- phylo_path(models, data = my_data, tree = my_tree, btol = 10 )
+save(result, file = "D://re-do_V2_Macroevolution//03_PGLS_212/models_results_reduced.RData")
+load(file = "D://re-do_V2_Macroevolution//03_PGLS_212/models_results_reduced.RData")
 
 s <- summary(result)
 #s
-save(s, file = "D://re-do_V2/03_PGLS_212/models_s.RData")
-#load(file = "D://re-do_V2/03_PGLS_212/models_s.RData")
+save(s, file = "D://re-do_V2_Macroevolution//03_PGLS_212/models_s_reduced.RData")
+load(file = "D://re-do_V2_Macroevolution//03_PGLS_212/models_s_reduced.RData")
 
 
 
