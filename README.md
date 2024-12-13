@@ -1,4 +1,9 @@
 This repo contains the files used for the analysis of the evolution of trophallaxis. 
+
+- SI_FILE1.csv contains the data collected on the species.
+- trophallaxis_prediction.csv contains the predicted trophallaxis behavior for the 252 species.
+
+
 - 01_Dtest_211sp_all_traits contains the input files with the traits, the models used to run the ancestral state reconstruction, and the scripts to run the analysis for species with known trophallaxis behavior. 
 - 02_BNN contains the files necessary to train a Bayesian Neural Network for trophallaxis inference.
   - input contains the features and labels for training as well as the features for prediction
