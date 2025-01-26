@@ -13,15 +13,15 @@
 
 04: Produce empirical Bayesian models (in /models/Bayes/)
 
-04: Launch Bayes_pp_212sp.sh
+05: Launch Bayes_pp_212sp.sh
 
-05: Collect the marg likelihood values ( tail */*marginal.likelihood.txt> marg_likelihood.txt) for every model and calculate the weights
+06: Collect the marg likelihood values ( tail */*marginal.likelihood.txt> marg_likelihood.txt) for every model and calculate the weights
 
-06: Blend the Bayesian models together with the appropriate weights using blend_Bayes.sh
+07: Blend the Bayesian models together with the appropriate weights using blend_Bayes.sh
 
-07: Merge models two by two: script merge_Bayes_pp.sh
+08: Merge models two by two: script merge_Bayes_pp.sh
 
-08: Launch the dtests: dtests.sh
+09: Launch the dtests: dtests.sh
 
 
 
