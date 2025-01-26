@@ -3,7 +3,7 @@ This repo contains the files used for the analysis of the evolution of trophalla
 - SI_File1.xlsx contains the data collected from literature and corresponding references. The legend is included in the file.
 - SI_File2.xlsx contains the values of the first nine eigenvalues per species.
 - SI_File3.xlsx contains the minimum and maximum values for temperature and humity used. 
-- trophallaxis_prediction.csv contains the predicted trophallaxis behavior for the 252 species.
+- SI_File4.csv contains the predicted trophallaxis behavior for the 252 species.
 
 
 - 01_Dtest_211sp_all_traits contains the input files with the traits, the models used to run the ancestral state reconstruction, and the scripts to run the analysis for species with known trophallaxis behavior. 
