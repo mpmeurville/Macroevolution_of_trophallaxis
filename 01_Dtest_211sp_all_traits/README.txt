@@ -1,27 +1,16 @@
 
-01: Setting the models for the Maximum Likelihood analysis. 
 
-02: Run the srcipt 00_ML_212sp.sh
+01: Produce empirical Bayesian models (in /models/Bayes/)
 
-03: 
+02: Launch 02_Bayes_pp_212sp.sh (produce the inference for all models)
 
-    tail -n +1 */*mean.params* > ml_estimates_ML_all.txt
--> To extract all the rates and build the empirical bayesian models.
+03: Collect the marg likelihood values ( tail */*marginal.likelihood.txt> marg_likelihood.txt) for every model and calculate the weights
 
-    tail -n +1 */*modelstat.txt* > modelstat_ML.txt
--> Extract AIC, BIC etc.
+04: Blend the Bayesian models together **with the appropriate weights** collected at the previous step, using 03_blend_212_sp.sh
 
-04: Produce empirical Bayesian models (in /models/Bayes/)
+05: Merge models two by two: script 04_merge_212sp.sh. Merge each trait with trophallaxis.
 
-05: Launch Bayes_pp_212sp.sh
-
-06: Collect the marg likelihood values ( tail */*marginal.likelihood.txt> marg_likelihood.txt) for every model and calculate the weights
-
-07: Blend the Bayesian models together with the appropriate weights using blend_Bayes.sh
-
-08: Merge models two by two: script merge_Bayes_pp.sh
-
-09: Launch the dtests: dtests.sh
+09: Launch the script 05_d-tests_212sp.sh to calculate the correlations. 
 
 
 
